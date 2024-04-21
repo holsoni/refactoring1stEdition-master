@@ -26,9 +26,9 @@ public class CustomerTest {
     @Test
     public void testStatement_noRentals() {
         Customer customer = new Customer("John", new ArrayList<>());
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertTrue(statement.contains("Rental Record for John"));
-        assertTrue(statement.contains("Amount owed is 0.0"));
+        assertTrue(statement.contains("Amount owed is 0,0"));
         assertTrue(statement.contains("You earned 0 frequent renter points"));
     }
 
@@ -39,9 +39,9 @@ public class CustomerTest {
         rentals.add(new Rental(new Movie(MOVIE_NAME_2_DAYS, Movie.MovieType.NEW_RELEASE), 2));
         rentals.add(new Rental(new Movie(MOVIE_NAME_2_DAYS, Movie.MovieType.CHILDRENS), 2));
         Customer customer = new Customer("Alice", rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertNotNull(statement);
-        assertTrue(statement.contains("Amount owed is 9.5"));
+        assertTrue(statement.contains("Amount owed is 9,5"));
         assertTrue(statement.contains("You earned 4 frequent renter points"));
     }
 
@@ -52,9 +52,9 @@ public class CustomerTest {
         rentals.add(new Rental(new Movie(MOVIE_NAME_3_DAYS, Movie.MovieType.REGULAR), 3));
         rentals.add(new Rental(new Movie(MOVIE_NAME_4_DAYS, Movie.MovieType.REGULAR), 4));
         Customer customer = new Customer("Bob", rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertNotNull(statement);
-        assertTrue(statement.contains("Amount owed is 10.5"));
+        assertTrue(statement.contains("Amount owed is 10,5"));
         assertTrue(statement.contains("You earned 3 frequent renter points"));
     }
 
@@ -63,9 +63,9 @@ public class CustomerTest {
         List<Rental> rentals = new ArrayList<>();
         rentals.add(new Rental(new Movie(MOVIE_NAME_2_DAYS, Movie.MovieType.NEW_RELEASE), 2));
         Customer customer = new Customer("Bob", rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertNotNull(statement);
-        assertTrue(statement.contains("Amount owed is 6.0"));
+        assertTrue(statement.contains("Amount owed is 6,0"));
         assertTrue(statement.contains("You earned 2 frequent renter points"));
     }
 
@@ -76,9 +76,9 @@ public class CustomerTest {
         rentals.add(new Rental(new Movie(MOVIE_NAME_3_DAYS, Movie.MovieType.NEW_RELEASE), 3));
         rentals.add(new Rental(new Movie(MOVIE_NAME_4_DAYS, Movie.MovieType.CHILDRENS), 4));
         Customer customer = new Customer("David", rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertNotNull(statement);
-        assertTrue(statement.contains("Amount owed is 17.0"));
+        assertTrue(statement.contains("Amount owed is 17,0"));
         assertTrue(statement.contains("You earned 4 frequent renter points"));
     }
 
@@ -88,7 +88,7 @@ public class CustomerTest {
         List<Rental> rentals = new ArrayList<>();
         rentals.add(new Rental(new Movie(MOVIE_NAME_2_DAYS, Movie.MovieType.REGULAR), 2));
         Customer customer = new Customer(longName, rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertTrue(statement.contains("Rental Record for " + longName));
     }
 
@@ -97,7 +97,7 @@ public class CustomerTest {
         List<Rental> rentals = new ArrayList<>();
         rentals.add(new Rental(new Movie(MOVIE_NAME_2_DAYS, Movie.MovieType.REGULAR), -2));
         Customer customer = new Customer("Bob", rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertFalse(statement.contains("Regular Movie"));
     }
 
@@ -106,7 +106,7 @@ public class CustomerTest {
         List<Rental> rentals = new ArrayList<>();
         rentals.add(new Rental(new Movie(MOVIE_NAME_2_DAYS, Movie.MovieType.REGULAR), 2));
         Customer customer = new Customer("Bob", rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertNotNull(statement);
     }
 
@@ -117,7 +117,7 @@ public class CustomerTest {
             rentals.add(new Rental(new Movie("Movie " + i, Movie.MovieType.REGULAR), 2));
         }
         Customer customer = new Customer("John", rentals);
-        String statement = customer.statement();
+        String statement = customer.getStatement();
         assertTrue(statement.contains("Amount owed is"));
         assertTrue(statement.contains("You earned"));
     }

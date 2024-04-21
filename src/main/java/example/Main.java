@@ -14,7 +14,7 @@ public class Main {
                 new Rental(LOTR, 4),
                 new Rental(HARRY_POTTER, 5));
 
-        String statement = new Customer("John Doe", rentals).statement();
+        String statement = new Customer("John Doe", rentals).getStatement();
 
         System.out.println(statement);
     }

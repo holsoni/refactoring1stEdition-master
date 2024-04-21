@@ -2,10 +2,13 @@ package example;
 
 import java.util.List;
 
-import static example.Movie.MovieType.NEW_RELEASE;
-
 @SuppressWarnings("StringConcatenationInLoop")
 class Customer {
+    private static final String RENTAL_HEADING = "Rental Record for %s \n";
+    private static final String AMOUNT_OWED_STRING = "Amount owed is %f\n";
+    private static final String AMOUNT_FREQUENT_POINTS_STRING = "You earned %d frequent renter points";
+    private static final String TABULATION = "\t";
+
     private final String name;
     private final List<Rental> rentals;
 
@@ -19,39 +22,27 @@ class Customer {
         return name;
     }
 
-    public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        String result = "Rental Record for " + getName() + "\n";
-        for (Rental each : rentals) {
-            double thisAmount = 0;
-            //determine amounts for each line
-            switch (each.getMovie().getPriceCode()) {
-                case REGULAR -> {
-                    thisAmount += 2;
-                    if (each.getDaysRented() > 2)
-                        thisAmount += (each.getDaysRented() - 2) * 1.5;
-                }
-                case NEW_RELEASE -> thisAmount += each.getDaysRented() * 3;
-                case CHILDRENS -> {
-                    thisAmount += 1.5;
-                    if (each.getDaysRented() > 3)
-                        thisAmount += (each.getDaysRented() - 3) * 1.5;
-                }
-            }
-            // add frequent renter points
-            frequentRenterPoints ++;
-            // add bonus for a two day new release rental
-            if ((each.getMovie().getPriceCode() == NEW_RELEASE) && each.getDaysRented() > 1)
-                frequentRenterPoints ++;
-            //show figures for this rental
-            result += "\t" + each.getMovie().getTitle()+ "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
+    public String getStatement() {
+        String statement = String.format(RENTAL_HEADING, getName());
+        statement = getString(statement);
+        statement += String.format(AMOUNT_OWED_STRING, getTotalCharge());
+        statement += String.format(AMOUNT_FREQUENT_POINTS_STRING, getTotalBonusPoints());
+        return statement;
+    }
+
+    private String getString(String result) {
+        for (Rental rental : rentals) {
+            result += TABULATION + rental.getMovie().getTitle()+ TABULATION + rental.getCharge() + TABULATION;
         }
-        //add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
-        result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
+    }
+
+    private double getTotalCharge() {
+        return rentals.stream().mapToDouble(Rental::getCharge).sum();
+    }
+
+    private int getTotalBonusPoints() {
+        return rentals.stream().mapToInt(Rental::getBonusPointsForMovie).sum();
     }
 
 
