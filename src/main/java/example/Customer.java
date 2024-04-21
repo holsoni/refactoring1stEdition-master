@@ -42,7 +42,7 @@ class Customer {
     }
 
     private int getTotalBonusPoints() {
-        return rentals.stream().mapToInt(Rental::getBonusPointsForMovie).sum();
+        return rentals.stream().mapToInt(Rental::getBonusPoint).sum();
     }
 
 
